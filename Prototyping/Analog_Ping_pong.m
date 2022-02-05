@@ -13,12 +13,11 @@ buf_size = Fs*2;  % max buffer size (delay time cannot be larger than half the b
 z = 1.5;
 delay_time = 400;                       % delay time in ms
 delay_samples = Fs * (delay_time/1000); % Delay time in samples
-Drive = 3;                                % Scalar gain value
+Drive = 1;                                % Scalar gain value
 FeedBack = 1;
 %========================================================================
 % filter controls
-fc = 2500;      %high shelf filter cutoff frequency
-level = 0.7;     % position of gain knob (1 = no shelf, 0 = max -12dB shelf gain)
+fc = 1500;
 %========================================================================
 % Distortion Controls
 distortion_control = 2;
@@ -32,14 +31,13 @@ previousOutput = 0;
 %x = zeros(N,1); % Input signal storage initialisation
 %x(1) = 1;   % Define input test signal as Kronecker Delta function
 [x, Fs] = audioread('Alesis-Fusion-Clean-Guitar-c3.wav');
-%[x, Fs] = audioread('Piano.wav');
 
 y = zeros(N,2);
 buffer = zeros(buf_size,2);
-write = 1;   % read first position
-read = buf_size - delay_samples;   % write position is delay num samples ahead
-xz1L = 0;  %Initialise previous input for low shelf filter
-yz1L = 0;  %Initialise previous output for low shelf filter
+write = 1;   % write first position
+read = buf_size - delay_samples;   
+xz1L = 0;
+yz1L = 0;
 xz2L = 0;
 yz2L = 0;
 xz1R = 0;
@@ -47,12 +45,9 @@ yz1R = 0;
 xz2R = 0;
 yz2R = 0;
 
-
-A = Drive;
-
 channel_1 = 1;
 channel_2 = 2;
-m = 1;
+
 
 for n = 1:N
      

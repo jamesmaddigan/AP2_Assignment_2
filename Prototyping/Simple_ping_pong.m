@@ -15,10 +15,6 @@ delay_samples = Fs * (delay_time/1000); % Delay time in samples
 Drive = 0.9;                                % Scalar gain value
 FeedBack = 0.7;
 %========================================================================
-% StepResponse for Ping Pong(transition from one channel to other
-alpha = 0.75;
-previousOutput = 0;
-%========================================================================
 
 [x, Fs] = audioread('Alesis-Fusion-Clean-Guitar-c3.wav');
 
@@ -39,16 +35,11 @@ for n = 1:N
          in_L = x(n, 1);
          in_R = 0;
      end
-     
-         %filteredSignal_L = buffer(read,1);
          y(n,1) = in_L + (buffer(read,1));
          y(n,2) = in_R + (buffer(read,2)); 
-  
-     %[buffer(write, 1), previousOutput] = stepResponse(y(n,1),alpha ,previousOutput); 
+ 
      buffer(write, channel_2) = ((in_L * Drive) + (y(n,1) * FeedBack));
      buffer(write, channel_1) = ((in_R * Drive) + (y(n,2) * FeedBack));
-    
-     
 
     read = read + 1;
     if (read > buf_size)
